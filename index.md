@@ -41,7 +41,7 @@ In terms of system architecture, we have the microcontroller and then three main
 with various peripherals/devices. We are using SPI to communicate with the OLED screen, where we are displaying the images.
 We are using I2C to interact with the BME280 temperature/humidity sensor. Finally, we are using HTTP over WiFi to access
 a remote server that contains configuration options and all of the images that will be displayed. For the remote server, we
-wrote a simple Python script using the \texttt{flask} framework that will serve images when requested and also the ordering
+wrote a simple Python script using the `flask` framework that will serve images when requested and also the ordering
 of the images when the microcontroller enters a state where it needs to refresh that information.
 
 ## Implementation
@@ -63,8 +63,8 @@ were able to rectify them in software by lowering the SPI bit rate rather than t
 
 The most complex part of our project was getting DMA working for the SPI bus. The amount of code involved was not particularly
 large, but the complexity of the underlying DMA configuration and some limitations that we only found through trial and error
-took a substantial amount of time to figure out. To initialize DMA, we first call the \texttt{UDMAInit()} command. Afterwards, we
-do the normal SPI configuration with the \texttt{SPIConfigSetExpClk} function, but then we configure the SPI FIFOs and enable
+took a substantial amount of time to figure out. To initialize DMA, we first call the `UDMAInit()` command. Afterwards, we
+do the normal SPI configuration with the `SPIConfigSetExpClk` function, but then we configure the SPI FIFOs and enable
 DMA along with interrupts:
 
 ```c++
@@ -89,7 +89,7 @@ SPIIntEnable(GSPI_BASE, SPI_INT_EOW);
 ```
 
 We used a relatively simple ISR to keep track of when a DMA request had finished, allowing us to know when we could move on
-to the next task. The ISR would simply clear the interrupts and then set a \texttt{volatile} variable called \texttt{spidone}
+to the next task. The ISR would simply clear the interrupts and then set a `volatile` variable called `spidone`
 that could be queried in a spin-lock from elsewhere within the code. The ISR in question was implemented as the following:
 
 ```c++
@@ -103,8 +103,8 @@ void SPIisr() {
 }
 ```
 
-After setup, we then wrote a new \texttt{drawImage()} function that would take in an image buffer and write it out to the OLED
-within the \texttt{Adafruit\_OLED} library. We copied the command setup from the \texttt{fillScreen} function, and then used
+After setup, we then wrote a new `drawImage()` function that would take in an image buffer and write it out to the OLED
+within the `Adafruit_OLED` library. We copied the command setup from the `fillScreen` function, and then used
 1024 chained DMAs of 32 bytes each to transfer the 32kb of data required to write out the entire screen. The total loop that we
 used looked like the following:
 
@@ -121,7 +121,7 @@ for (i = 0; i < 1024; ++i) {
 }
 ```
 
-The \texttt{UDMASetupTransfer} function initializes the DMA request. We need to call the built-in chip select enable
+The `UDMASetupTransfer` function initializes the DMA request. We need to call the built-in chip select enable
 and disable functions or otherwise the DMA would never finish. After enabling the chip select, we enter a spin-lock where
 we wait for the transfer to finish. Afterwards we disable the chip select so we can enable it again later. We can only transfer
 32 bytes at a time, presumably due to that being the SPI FIFO size.
@@ -144,7 +144,7 @@ the code to not use any of the CC3200's hardware to encrypt/decrypt the HTTP tra
 initialization code which was easy enough to modify. The images that we were requesting were also 32kb in size. The
 socket recieve function in the CC3200 sdk can only work with 16000 bytes at a time. Packets might also arrive after we start
 reading. This means that we would have to iterate through all of the data until we hit an end of message sentinel value that
-was always sent by the server. In our case, we just appended the string \texttt{endofmessage} to all of the responses that we
+was always sent by the server. In our case, we just appended the string `endofmessage` to all of the responses that we
 sent back to the microcontroller. The microcontroller would continuously call the recieve function with on the same buffer, with
 an offset equal to the number of bytes already recieved, until we had recieved the entire end of message string. We set the maximum
 number of bytes that we could recieve at one time to 16000, as otherwise we would get an immediate error due to the limits
@@ -156,7 +156,7 @@ never had time to thoroughly investigate.
 
 After getting all of the individual pieces working, we worked on integrating everything together. This part ended up being
 relatively easy. We had to implement a timer using SysTick to implement our automatic next photo feature, use our code and wiring
-from the previous lab to decode the IR buttons, and point our \texttt{drawImage} function at the buffer received over HTTP when
+from the previous lab to decode the IR buttons, and point our `drawImage` function at the buffer received over HTTP when
 we ended up getting it. This did not end up taking much code and our integration ended up working pretty reliably.
 
 ## Challenges
@@ -164,7 +164,7 @@ we ended up getting it. This did not end up taking much code and our integration
 We ran into two main challenges: getting DMA working, and getting our temperature/humidity sensor to work.
 Getting DMA working was quite challenging. We found the documentation underspecified. We were able to find some examples
 online of other people using DMA for SPI on the CC3200, but it took a while to understand the right flags and values to
-set to get things working. First off we found we were missing a \texttt{UDMAInit()} call after maybe an hour of investigation.
+set to get things working. First off we found we were missing a `UDMAInit()` call after maybe an hour of investigation.
 It was a simple fix, but extremely easy to miss. Next, thins appeared to be partially working. When we used DMA to write data
 over SPI, we could see some pixels appear on the screen, but we never seemed to be able to write more than a row or two of data.
 Eventually we decided to minimize the buffer size to see if that got things fixed, and to our surprise, everything started working.
