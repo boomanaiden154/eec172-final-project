@@ -22,6 +22,8 @@ user interface on the server side as we wanted to focus on the embedded systems 
 
 ### Functional Specification
 
+![System Flowchart](./systemflowchart.png)
+
 In terms of the functional specification, our design iterates through a series of states as shown in \ref{fig:flowchart}. When
 our program begins executing, we have an initial ordering of images. The code requests the image first in the order and then
 increments the current image number. The image then gets displayed. The micrcontroller then enters a loop where it waits for
@@ -32,6 +34,8 @@ specified image sequence from the server. The user can also request that the mic
 sequence by pressing the last button.
 
 ### System Architecture
+
+![System Architecture](./systemarchitecture.png)
 
 In terms of system architecture, we have the microcontroller and then three main protocols that we are using to communicate
 with various peripherals/devices. We are using SPI to communicate with the OLED screen, where we are displaying the images.
