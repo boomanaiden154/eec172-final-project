@@ -24,7 +24,7 @@ user interface on the server side as we wanted to focus on the embedded systems 
 
 ![System Flowchart](./systemflowchart.png)
 
-In terms of the functional specification, our design iterates through a series of states as shown in \ref{fig:flowchart}. When
+In terms of the functional specification, our design iterates through a series of states as shown in the image above. When
 our program begins executing, we have an initial ordering of images. The code requests the image first in the order and then
 increments the current image number. The image then gets displayed. The micrcontroller then enters a loop where it waits for
 either the time limit to expire or the user to move forward or backwards using the remote. Then, if the status screen should
@@ -210,4 +210,13 @@ Our bill of materials consisted mostly of items from previous labs. The only add
 BME280 temperature/humidity sensor at \$16. We ended up using the IR remote and transciever circuitry, the CC3200 launchpad,
 some dupont wires, and the 1.5" OLED. The total BOM along with costs to us is present in the table below.
 
-## Video Demos 
+## Video Demos
+
+### Demo 1 - Demonstrates Most Functionality
+
+<iframe src="https://www.youtube.com/embed/PcIDASCkvLE"></iframe>
+
+### Demo 2 - Demonstrates Automatically Changing Photos
+
+<iframe src="https://www.youtube.com/embed/20IWaNUZKZs"></iframe>
+
