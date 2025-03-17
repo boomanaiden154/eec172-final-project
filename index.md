@@ -214,9 +214,9 @@ some dupont wires, and the 1.5" OLED. The total BOM along with costs to us is pr
 
 ### Demo 1 - Demonstrates Most Functionality
 
-<iframe src="https://www.youtube.com/embed/PcIDASCkvLE"></iframe>
+<iframe src="https://www.youtube.com/embed/PcIDASCkvLE" width="800px" height="500px" allowfullscreen></iframe>
 
 ### Demo 2 - Demonstrates Automatically Changing Photos
 
-<iframe src="https://www.youtube.com/embed/20IWaNUZKZs"></iframe>
+<iframe src="https://www.youtube.com/embed/20IWaNUZKZs" width="800px" height="500px" allowfullscreen></iframe>
 
